@@ -9,8 +9,6 @@ class VehiclesPage extends GetView<VehiclesController> {
 
   @override
   Widget build(BuildContext context) {
-
- 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -21,31 +19,30 @@ class VehiclesPage extends GetView<VehiclesController> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: vehiculos.when(
-          data: (vehiculosList) => ListView.builder(
-            itemCount: vehiculosList.length,
+        child: Obx(() {
+          if (controller.dataVehicles.isEmpty) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: controller.dataVehicles.length,
             itemBuilder: (context, index) {
-              final vehiculo = vehiculosList[index];
+              final vehiculo = controller.dataVehicles[index];
               return Card(
                 child: ListTile(
                   leading: const Icon(Icons.directions_car),
                   title: Text(vehiculo.plaVeh),
                   subtitle: Text('ID: ${vehiculo.idIngCou}'),
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/vehicle_detail',
-                      (Route<dynamic> route) => false,
-                      arguments: vehiculo,
-                    );
+                    Get.offAllNamed("/vehicle_detail", arguments: vehiculo);
                   },
                 ),
               );
             },
-          ),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(child: Text('Error: $error')),
-        ),
+          );
+        }),
       ),
     );
   }

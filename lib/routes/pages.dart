@@ -1,6 +1,8 @@
 import 'package:app_fox/features/splash/bindings/splash_binding.dart';
 import 'package:app_fox/features/splash/presentation/pages/splash_page.dart';
+import 'package:app_fox/features/vehicles/bindings/detail_binding.dart';
 import 'package:app_fox/features/vehicles/bindings/vehicles_binding.dart';
+import 'package:app_fox/features/vehicles/presentation/pages/detail_page.dart';
 import 'package:app_fox/features/vehicles/presentation/pages/vehicles_page.dart';
 import 'package:get/get.dart';
 part './routes.dart';
@@ -13,10 +15,16 @@ abstract class AppPages {
       binding: SplashBinding(),
       transition: Transition.fadeIn,
     ),
-      GetPage(
+    GetPage(
       name: Routes.vehicles,
       page: () => const VehiclesPage(),
       binding: VehiclesBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.vehicleDetail,
+      page: () => const DetailPage(),
+      binding: DetailBinding(),
       transition: Transition.fadeIn,
     ),
   ];
