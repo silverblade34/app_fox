@@ -13,6 +13,7 @@ class DetailController extends GetxController {
   final picker = ImagePicker();
   Vehicle vehicle = Get.arguments;
   RxList<String> images = RxList([]);
+  RxString imageMain = "".obs;
   DetailRepository detailRepository = DetailRepository();
 
   Future<void> abrirGaleria() async {
@@ -26,6 +27,27 @@ class DetailController extends GetxController {
     }
   }
 
+  Future<void> tomarFotoMain() async {
+    if (await _pedirPermisoCamara()) {
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 1920,
+        maxHeight: 1080,
+        imageQuality: 70,
+      );
+      if (image != null) {
+        imageMain.value = image.path;
+      }
+    } else {
+      showCustomAlertDialog(
+        Get.context!,
+        'Información',
+        "No ha brindado los permisos",
+        AlertType.info,
+      );
+    }
+  }
+
   Future<void> tomarFoto() async {
     if (await _pedirPermisoCamara()) {
       final XFile? image = await picker.pickImage(
@@ -36,15 +58,6 @@ class DetailController extends GetxController {
       );
       if (image != null) {
         images.add(image.path);
-        int fileSizeInBytes = await File(image.path).length();
-
-        double fileSizeInKB = fileSizeInBytes / 1024;
-
-        double fileSizeInMB = fileSizeInKB / 1024;
-        print(
-            'Tamaño de la imagen en KB: ${fileSizeInKB.toStringAsFixed(2)} KB');
-        print(
-            'Tamaño de la imagen en MB: ${fileSizeInMB.toStringAsFixed(2)} MB');
       }
     } else {
       showCustomAlertDialog(
@@ -80,28 +93,26 @@ class DetailController extends GetxController {
 
   saveImages(BuildContext context) async {
     try {
-      if (images.isNotEmpty) {
+      if (images.isNotEmpty || imageMain.value != "") {
         showLoadingDialog(context);
         Map<String, dynamic> dataFile = {
           "IdIngCou": vehicle.idIngCou,
-          "NumVez": vehicle.numVez,
-          "Item": "4568",
-          "Detalle": "Detalle 1234",
+          "Item": "",
+          "Detalle": "Enviado desde el aplicativo",
           "LogUsu": "ADMIN",
-          "ChkCert": 1,
-          "ChkCloud": 0,
-          "PathCloud": "",
         };
 
-        List<File> imagesFile =
-            images.map((imagePath) => File(imagePath)).toList();
-        final response =
-            await detailRepository.saveImages(dataFile, imagesFile);
+        List<File> imagesFile = [
+          File(imageMain.value),
+          ...images.map((imagePath) => File(imagePath))
+        ];
+
+        await detailRepository.saveImages(dataFile, imagesFile);
         Navigator.of(Get.context!).pop();
         showCustomAlertDialog(
           Get.context!,
           'Logrado',
-          response["message"],
+          "Se ha registrado correctamente",
           AlertType.success,
         );
         Timer(

@@ -7,6 +7,7 @@ class VehicleProvider {
   Future<Response> getVehicles() async {
     try {
       Dio dioClient = Dio();
+      print('$baseUrl/api/plates/list');
       final response = await dioClient.get('$baseUrl/api/plates/list');
       return response;
     } catch (e) {

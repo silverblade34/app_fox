@@ -34,23 +34,31 @@ class VehicleDto {
 }
 
 class Vehicle {
+  int id;
   String idIngCou;
   int numVez;
   String plaVeh;
+  int status;
 
   Vehicle({
+    required this.id,
+    required this.status,
     required this.idIngCou,
     required this.numVez,
     required this.plaVeh,
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
+        id: json["id"],
+        status: json["status"],
         idIngCou: json["IdIngCou"],
         numVez: json["NumVez"],
         plaVeh: json["PlaVeh"],
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
+        "status": status,
         "IdIngCou": idIngCou,
         "NumVez": numVez,
         "PlaVeh": plaVeh,

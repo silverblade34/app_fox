@@ -15,7 +15,7 @@ class DetailProvider {
       final formData = FormData.fromMap(
         {
           ...payload,
-          'images': [
+          'file': [
             for (var image in images)
               await MultipartFile.fromFile(
                 image.path,

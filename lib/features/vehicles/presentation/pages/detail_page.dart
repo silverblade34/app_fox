@@ -41,44 +41,117 @@ class DetailPage extends GetView<DetailController> {
               style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
+            Obx(
+              () => controller.imageMain.value.isNotEmpty
+                  ? Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FullScreenImage(
+                                  image: Image.file(
+                                    File(controller.imageMain.value),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Image.file(
+                            File(controller.imageMain.value),
+                            width: 130,
+                            height: 130,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                            style: const ButtonStyle(
+                              padding:
+                                  WidgetStatePropertyAll(EdgeInsets.all(0)),
+                              backgroundColor:
+                                  WidgetStatePropertyAll(Colors.red),
+                            ),
+                            onPressed: () {
+                              controller.imageMain.value = "";
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  : Image.asset(
+                      'assets/images/picture.png',
+                      width: 150,
+                    ),
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: AppColors.secondaryColor,
-                //   ),
-                //   onPressed: () => controller.abrirGaleria(),
-                //   child: const Text(
-                //     'Abrir Galería',
-                //     style: TextStyle(color: Colors.white),
-                //   ),
-                // ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.secondaryColor,
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                    ),
+                    onPressed: () => controller.tomarFotoMain(),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          'Foto principal',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
-                  onPressed: () => controller.tomarFoto(),
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Adjuntar Foto',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondaryColor,
+                    ),
+                    onPressed: () => controller.tomarFoto(),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          'Fotos secundarias',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-
             // Mostrar imágenes en un Wrap
             Obx(() => controller.images.isNotEmpty
                 ? Wrap(
