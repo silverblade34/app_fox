@@ -7,15 +7,19 @@ class VehiclesRepository {
   Future<VehicleDto> getVehicles() async {
     print("-----------------------------1");
     final response = await vehicleProvider.getVehicles();
-    print("-----------------------------");
+    print("-----------------------------2");
     print(response.data);
     if (response.data == null) {
+      print("-----------------------------3");
       throw Exception("No se recibieron datos en la respuesta");
     } else if (response.statusCode == 400) {
+      print("-----------------------------4");
       throw Exception("Error desconocido");
     } else if (response.data["status"] == false) {
+      print("-----------------------------5");
       throw Exception(response.data["message"]);
     }
+    print("-----------------------------6");
     final body = response.data;
     VehicleDto data = VehicleDto.fromJson(body);
     return data;

@@ -16,6 +16,7 @@ class VehiclesController extends GetxController {
       final response = await vehiclesRepository.getVehicles();
       dataVehicles.value = response.data;
     } catch (e) {
+      print(e.toString());
       Get.snackbar(
         'Error',
         'Ocurrió un error al cargar los vehículos',

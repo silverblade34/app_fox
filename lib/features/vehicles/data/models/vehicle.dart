@@ -51,7 +51,7 @@ class Vehicle {
   factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
         id: json["id"],
         status: json["status"],
-        idIngCou: json["IdIngCou"],
+        idIngCou: json["InIngCou"],
         numVez: json["NumVez"],
         plaVeh: json["PlaVeh"],
       );
@@ -59,7 +59,7 @@ class Vehicle {
   Map<String, dynamic> toJson() => {
         "id": id,
         "status": status,
-        "IdIngCou": idIngCou,
+        "InIngCou": idIngCou,
         "NumVez": numVez,
         "PlaVeh": plaVeh,
       };

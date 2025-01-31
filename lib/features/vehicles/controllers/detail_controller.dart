@@ -100,6 +100,7 @@ class DetailController extends GetxController {
           "Item": "",
           "Detalle": "Enviado desde el aplicativo",
           "LogUsu": "ADMIN",
+          "id_plate": vehicle.id
         };
 
         List<File> imagesFile = [

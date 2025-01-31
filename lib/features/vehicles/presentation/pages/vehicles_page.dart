@@ -20,12 +20,6 @@ class VehiclesPage extends GetView<VehiclesController> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Obx(() {
-          if (controller.dataVehicles.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
           return ListView.builder(
             itemCount: controller.dataVehicles.length,
             itemBuilder: (context, index) {

@@ -7,8 +7,15 @@ class VehicleProvider {
   Future<Response> getVehicles() async {
     try {
       Dio dioClient = Dio();
-      print('$baseUrl/api/plates/list');
-      final response = await dioClient.get('$baseUrl/api/plates/list');
+      final body = {
+        "code": "LIMA123"
+      };
+
+      final response = await dioClient.post(
+        '$baseUrl/api/v1/plates/code',
+        data: body,
+      );
+
       return response;
     } catch (e) {
       throw Exception("Error de conexión al servidor: $e");

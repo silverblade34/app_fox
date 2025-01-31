@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
@@ -11,11 +12,12 @@ class DetailProvider {
       Map<String, dynamic> payload, List<File> images) async {
     try {
       Dio dioClient = Dio();
-
+      print("Enviando.....");
+      print(jsonEncode(payload));
       final formData = FormData.fromMap(
         {
           ...payload,
-          'file': [
+          'files': [
             for (var image in images)
               await MultipartFile.fromFile(
                 image.path,
@@ -27,7 +29,7 @@ class DetailProvider {
       );
 
       final response = await dioClient.post(
-        '$baseUrl/api/evidence/create',
+        '$baseUrl/api/v1/evidence/create',
         data: formData,
         options: Options(
           headers: {
